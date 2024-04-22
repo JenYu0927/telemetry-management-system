@@ -1,0 +1,2 @@
+runtier3_path: "/opt/run-teir3" # be used on tier2 host
+tier2_playbooks_path: "/opt/ansible/telemetry-deployer" # be used in ansible container

@@ -1,0 +1,66 @@
+---
+# Source: telegraf/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: telegraf-{{ .Chart.Name }}
+  labels:
+    app.kubernetes.io/name: telegraf
+data:
+  telegraf.conf: |+
+
+    [agent]
+      interval = "10s"
+      round_interval = true
+      metric_batch_size = 1000
+      metric_buffer_limit = 10000
+      collection_jitter = "0s"
+      flush_interval = "5s"
+      flush_jitter = "0s"
+      precision = ""
+      debug = true
+      quiet = false
+      hostname = {{ quote .Values.switch.location }}
+      omit_hostname = false
+
+    [[inputs.qct_switch_restful]]     
+      host = {{ quote .Values.switch.switchHostIP_1 }}
+      cli_port = {{ quote .Values.switch.cliPort_1 }} 
+      restful_port = "8446"
+      username = {{ quote .Values.switch.username }}           
+      password = {{ quote .Values.switch.password }}
+      [inputs.qct_switch_restful.tags]
+        datacenter_id = {{ quote .Values.qct.datacenterID }}
+        room_id = {{ quote .Values.qct.roomID }}
+        rack_id = {{ quote .Values.qct.rackID }}
+        switch_id = {{ quote .Values.switch.switchID_1 }}
+                                      
+    [[inputs.qct_switch_restful]]     
+      host = {{ quote .Values.switch.switchHostIP_2 }}
+      cli_port = {{ quote .Values.switch.cliPort_2 }}
+      restful_port = "8446"           
+      username = {{ quote .Values.switch.username }}
+      password = {{ quote .Values.switch.password }}
+      [inputs.qct_switch_restful.tags]
+        datacenter_id = {{ quote .Values.qct.datacenterID }}
+        room_id = {{ quote .Values.qct.roomID }}
+        rack_id = {{ quote .Values.qct.rackID }}
+        switch_id = {{ quote .Values.switch.switchID_2 }}
+
+    [[inputs.qct_switch_restful]]
+      host = {{ quote .Values.switch.switchHostIP_3 }}
+      cli_port = {{ quote .Values.switch.cliPort_3 }}
+      restful_port = "8446"
+      username = {{ quote .Values.switch.username }}
+      password = {{ quote .Values.switch.password }}
+      [inputs.qct_switch_restful.tags]
+        datacenter_id = {{ quote .Values.qct.datacenterID }}
+        room_id = {{ quote .Values.qct.roomID }}
+        rack_id = {{ quote .Values.qct.rackID }}
+        switch_id = {{ quote .Values.switch.switchID_3 }}
+
+    [[outputs.prometheus_client]]
+      # metric_version = 2
+      listen = ":9273"
+      path = "/metrics"
+      expiration_interval = "60s"

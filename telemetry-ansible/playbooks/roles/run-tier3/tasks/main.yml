@@ -1,0 +1,26 @@
+- name: Create necessary directory if it does not exist
+  file:
+    path: "{{ runtier3_path }}"
+    state: directory
+    mode: "0755"
+  become: yes
+
+- name: Copy Script
+  template:
+    src: "{{ item }}"
+    dest: "{{ runtier3_path }}"
+    mode: a+x
+  with_items:
+    - run-tier3.sh
+  become: yes
+
+- name: Launch script
+  shell: ./run-tier3.sh
+  args:
+    executable: bash
+    chdir: "{{ runtier3_path }}"
+  register: res
+
+- name: Show the results
+  debug:
+    msg: "{{ res.stdout_lines }}"

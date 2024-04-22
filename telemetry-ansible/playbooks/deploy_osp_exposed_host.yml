@@ -1,0 +1,15 @@
+- name: deploy exposed_host
+  hosts: osp_exposed_host
+  gather_facts: yes
+  vars:
+    exposed_host: "{{ ansible_default_ipv4.address }}"
+  tasks:
+    - debug:
+        msg: "{{ exposed_host }}"
+  roles:
+    - ansible
+    - prometheus
+    - consul
+    - telegraf-server
+#    - fluentd
+    - run-tier3

@@ -1,0 +1,16 @@
+{
+  "id": "node-switch",
+  "name": "telegraf",
+  "address": "telegraf-switch.default.svc.cluster.local",
+  "port": 9273,
+  "tags": [
+    "server"
+  ],
+  "checks": [
+    {
+      "http": "http://telegraf-switch.default.svc.cluster.local:9273/metrics",
+      "interval": "25s"
+    }
+  ]
+}
+

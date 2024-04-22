@@ -1,0 +1,14 @@
+{
+  "ID": "tier2-prom",
+  "Name": "OSP-prom",
+  "Tags": ["OSP","prometheus"],
+  "Address": "{{ exposed_host }}",
+  "Port": 9090,
+  "Checks": [
+    {
+      "http": "http://{{ exposed_host }}:9090/federate",
+      "Interval": "10s"
+    }
+  ]
+}
+

@@ -1,0 +1,785 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "iteration": 1600763095080,
+  "links": [],
+  "panels": [
+    {
+      "content": "\n\n\n\n",
+      "gridPos": {
+        "h": 14,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "mode": "markdown",
+      "options": {},
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Room Information",
+      "type": "text"
+    },
+    {
+      "content": "\n\n\n\n\n",
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "mode": "markdown",
+      "options": {},
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Device Health Status",
+      "type": "text"
+    },
+    {
+      "content": "\n\n\n\n\n",
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 3,
+      "mode": "markdown",
+      "options": {},
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Power Usage Effectiveness",
+      "type": "text"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "Prometheus",
+      "decimals": null,
+      "description": "Network Throughput",
+      "format": "Bps",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 12,
+        "y": 8
+      },
+      "id": 4,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "options": {},
+      "postfix": "",
+      "postfixFontSize": "70%",
+      "prefix": "",
+      "prefixFontSize": "100%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "sum(irate(qct_switch_rx_bytes{datacenter_id=\"$datacenter_id\"}[2m]))+sum(irate(qct_switch_tx_bytes{datacenter_id=\"$datacenter_id\"}[2m]))",
+          "refId": "A"
+        }
+      ],
+      "thresholds": "",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "singlestat",
+      "valueFontSize": "120%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "aliasColors": {
+        "RX": "#0071b2",
+        "TX": "#91cef0",
+        "Total RX of Devices": "#0071b2",
+        "Total TX of Devices": "#91cef0",
+        "sum(ipmi_sensor{DC_ID=\"1\",sensor_name=\"temp_inlet\",unit=\"degrees C\"}) / count(ipmi_sensor{DC_ID=\"1\",sensor_name=\"temp_inlet\",unit=\"degrees C\"})": "semi-dark-blue",
+        "sum(ipmi_sensor{DC_ID=\"dc1234\",sensor_name=\"temp_inlet\",unit=\"degrees C\"}) / count(ipmi_sensor{DC_ID=\"dc1234\",sensor_name=\"temp_inlet\",unit=\"degrees C\"})": "semi-dark-blue",
+        "sum(ipmi_sensor{DC_ID=~\"dc1234\",unit=\"Watts\"}) / 1000": "semi-dark-blue",
+        "sum(rate(net_bytes_sent{DC_ID=\"1\"}[15s]) + rate(net_bytes_recv{DC_ID=\"1\"}[15s])) * 8 / (1024^3)": "dark-blue",
+        "{City=\"Taipei\",Country=\"Taiwan\",DC_ID=\"dc1234\",LCT=\"na\",LNCT=\"na\",RackIndexInRow=\"4\",Room_ID=\"123\",RowIndexInRoom=\"32\",UCT=\"80.000\",UNCT=\"75.000\",host=\"AbbyHost\",instance=\"10.103.11.100:9081\",job=\"prom_ipmi_sensor\",qct_serial_no=\"QTFCR2725007B\",sensor_name=\"temp_inlet\",server=\"10.103.15.13\",status=\"ok\",unit=\"degrees C\"}": "semi-dark-blue"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "Network Throughput",
+      "fill": 3,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 8
+      },
+      "id": 5,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "paceLength": 10,
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(irate(qct_switch_tx_bytes{datacenter_id=\"$datacenter_id\"}[2m]))",
+          "legendFormat": "Total TX of Devices",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(qct_switch_rx_bytes{datacenter_id=\"$datacenter_id\"}[2m]))",
+          "legendFormat": "Total RX of Devices",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "Bps",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "Prometheus",
+      "decimals": 2,
+      "description": "Power Consumption",
+      "format": "short",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 0,
+        "y": 14
+      },
+      "id": 6,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "options": {},
+      "postfix": " kW",
+      "postfixFontSize": "70%",
+      "prefix": "",
+      "prefixFontSize": "100%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "(sum(ipmi_sensor{datacenter_id=\"$datacenter_id\",sensor_name=~\"psu.+input\"})+sum(qct_switch_power{datacenter_id=\"$datacenter_id\"}))/1000",
+          "refId": "A"
+        }
+      ],
+      "thresholds": "",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "singlestat",
+      "valueFontSize": "120%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "aliasColors": {
+        "Average Temperature of Devices": "#91cef0",
+        "Total Power Consumption of Devices": "#91cef0",
+        "sum(ipmi_sensor{DC_ID=\"1\",unit=\"Watts\"}) / 1000": "#0071b2",
+        "sum(ipmi_sensor{DC_ID=\"dc1234\",unit=\"Watts\"}) / 1000": "semi-dark-blue",
+        "sum(ipmi_sensor{DC_ID=~\"dc1234\",unit=\"Watts\"}) / 1000": "semi-dark-blue",
+        "test": "semi-dark-blue"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "Power Consumption",
+      "fill": 3,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 4,
+        "y": 14
+      },
+      "id": 7,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "paceLength": 10,
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "(sum(ipmi_sensor{datacenter_id=\"$datacenter_id\",sensor_name=~\"psu.+input\"})+sum(qct_switch_power{datacenter_id=\"$datacenter_id\"}))/1000",
+          "instant": false,
+          "legendFormat": "Total Power Consumption of Devices",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "kwatt",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "Prometheus",
+      "decimals": 1,
+      "description": "Temperature",
+      "format": "short",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 12,
+        "y": 14
+      },
+      "id": 8,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "options": {},
+      "postfix": " °C",
+      "postfixFontSize": "70%",
+      "prefix": "",
+      "prefixFontSize": "100%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "avg(ipmi_sensor{datacenter_id=\"$datacenter_id\",sensor_name=\"temp_inlet\"})",
+          "refId": "A"
+        }
+      ],
+      "thresholds": "",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "singlestat",
+      "valueFontSize": "120%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "aliasColors": {
+        "Average Temperature of Devices": "#0071b2",
+        "Total Power Consumption of Devices": "#0071b2",
+        "sum(ipmi_sensor{DC_ID=\"1\",sensor_name=\"temp_inlet\",unit=\"degrees C\"}) / count(ipmi_sensor{DC_ID=\"1\",sensor_name=\"temp_inlet\",unit=\"degrees C\"})": "#0071b2",
+        "sum(ipmi_sensor{DC_ID=\"dc1234\",sensor_name=\"temp_inlet\",unit=\"degrees C\"}) / count(ipmi_sensor{DC_ID=\"dc1234\",sensor_name=\"temp_inlet\",unit=\"degrees C\"})": "semi-dark-blue",
+        "sum(ipmi_sensor{DC_ID=~\"dc1234\",unit=\"Watts\"}) / 1000": "semi-dark-blue",
+        "{City=\"Taipei\",Country=\"Taiwan\",DC_ID=\"dc1234\",LCT=\"na\",LNCT=\"na\",RackIndexInRow=\"4\",Room_ID=\"123\",RowIndexInRoom=\"32\",UCT=\"80.000\",UNCT=\"75.000\",host=\"AbbyHost\",instance=\"10.103.11.100:9081\",job=\"prom_ipmi_sensor\",qct_serial_no=\"QTFCR2725007B\",sensor_name=\"temp_inlet\",server=\"10.103.15.13\",status=\"ok\",unit=\"degrees C\"}": "semi-dark-blue"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "Temperature",
+      "fill": 3,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 14
+      },
+      "id": 9,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "paceLength": 10,
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "avg(ipmi_sensor{datacenter_id=\"$datacenter_id\",sensor_name=\"temp_inlet\"})",
+          "instant": false,
+          "legendFormat": "Average Temperature of Devices",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 1,
+          "format": "celsius",
+          "label": null,
+          "logBase": 1,
+          "max": "100",
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "columns": [
+        {
+          "text": "Severity",
+          "value": "Severity"
+        },
+        {
+          "text": "Date Time",
+          "value": "Date Time"
+        },
+        {
+          "text": "Message",
+          "value": "Message"
+        },
+        {
+          "text": "Source",
+          "value": "Source"
+        },
+        {
+          "text": "Event Type",
+          "value": "Event Type"
+        },
+        {
+          "text": "Room_ID",
+          "value": "Room_ID"
+        },
+        {
+          "text": "Rack_ID",
+          "value": "Rack_ID"
+        },
+        {
+          "text": "SerialNo",
+          "value": "SerialNo"
+        }
+      ],
+      "datasource": "ES-Server",
+      "description": "Event Log",
+      "fontSize": "80%",
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 10,
+      "options": {},
+      "pageSize": null,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Date Time",
+          "thresholds": [],
+          "type": "date",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "bucketAggs": [],
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "meta": {},
+              "settings": {
+                "size": 25
+              },
+              "type": "raw_document"
+            }
+          ],
+          "query": "DC_ID: $datacenter_id",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "timeFrom": "90d",
+      "timeShift": null,
+      "title": "",
+      "transform": "json",
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 18,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "tags": [],
+          "text": "30",
+          "value": "30"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "datacenter_id",
+        "options": [
+          {
+            "selected": true,
+            "text": "30",
+            "value": "30"
+          }
+        ],
+        "query": "30",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "NFVD-DC",
+  "uid": "NFVD-DC",
+  "version": 1
+}{}

@@ -1,0 +1,88 @@
+- name : Create necessary directory if it does not exist
+  file:
+    path: "{{ prom_path }}"
+    state: directory
+    mode: "0755"
+  become: yes
+
+- name: Copy prometheus image
+  copy:
+    src: "{{ item }}"
+    dest: "{{ prom_path }}"
+  with_items: 
+    - prometheus.tar
+  become: yes
+
+- name: Copy prometheus files
+  template:
+    src: "{{ item }}"
+    dest: "{{ prom_path }}"
+  with_items:
+    - prometheus.yml
+    - tier2-prom.json
+  become: yes
+
+- name: Copy prometheus script
+  template:
+    src: "run-tier2-prom.sh"
+    dest: "{{ prom_path }}"
+    mode: a+x
+  become: yes
+
+- name: Copy prometheus register script
+  template:
+    src: "register-tier2-prom.sh"
+    dest: "{{ prom_path }}"
+    mode: a+x
+  become: yes
+
+- name: Copy prometheus deregister script
+  template:
+    src: "deregister-tier2-prom.sh"
+    dest: "{{ prom_path }}"
+    mode: a+x
+  become: yes
+
+- name: Load image
+  shell: "docker load -i {{ prom_path }}/prometheus.tar"
+  args:
+    executable: bash
+  become: yes
+  register: load 
+
+- name: Show the results
+  debug:
+    msg: "{{ load.stdout_lines }}"
+
+- name: Insert firewall rule for prometheus federation if it dosen't exist
+  shell: iptables -C INPUT -p tcp --dport 9090 -j ACCEPT; temp=$?; if [ $temp -eq 1 ]; then iptables -I INPUT -p tcp --dport 9090 -j ACCEPT;fi
+  become: yes
+
+- name: Launch prometheus
+  shell: "./run-tier2-prom.sh"
+  args:
+    executable: bash
+    chdir: "{{ prom_path }}"
+  register: launch
+  become: yes
+
+- name: Check if container is running
+  vars:
+    docker_inspect_cmd: !unsafe docker container inspect -f '{{.State.Running }}' qct-prometheus
+  shell: "{{ docker_inspect_cmd }}"
+  register: res
+  until: res.stdout == 'true'
+  retries: 6
+  delay: 5
+
+- name: Register tier 2 prometheus to OCP consul
+  shell: "./register-tier2-prom.sh"
+  args:
+#    executable: bash
+    chdir: "/opt/prometheus"
+  register: reg
+  become: yes
+
+- name: Show register results
+  debug:
+    msg: "{{ reg }}"

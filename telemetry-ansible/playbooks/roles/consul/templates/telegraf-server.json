@@ -1,0 +1,14 @@
+{
+  "name": "OSP-telegraf",
+  "id": "telegraf-{{ host_name }}",
+  "address": "{{ exposed_host }}",
+  "port": 9274,
+  "tags": [ "exposed_server","OSP" ],
+  "checks": [
+    {
+      "http": "http://{{ exposed_host }}:9274/metrics",
+      "interval": "25s"
+    }
+  ]
+}
+

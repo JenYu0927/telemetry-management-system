@@ -1,0 +1,91 @@
+- name : Create necessary directory if it does not exist
+  file:
+    path: "{{ consul_path }}"
+    state: directory
+    mode: "0755"
+  become: yes
+
+- name: Copy consul files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ consul_path }}"
+  with_items: 
+    - consul.tar
+  become: yes
+
+#- name: Copy register json files
+#  template:
+#    src: "{{ item }}"
+#    dest: "{{ consul_path }}"
+#  with_items:
+#    - telegraf-server.json 
+#    - telegraf-remote.json
+#    - telegraf-switch.json
+#  become: yes
+
+- name: Copy consul script & telegraf register script
+  template:
+    src: "{{ item }}"
+    dest: "{{ consul_path }}"
+    mode: a+x
+  with_items:
+    - run-tier2-consul.sh
+#    - register-telegraf.sh
+#    - deregister-telegraf.sh
+  become: yes
+
+- name: Load image
+  shell: "docker load -i {{ consul_path }}/consul.tar"
+  args:
+    executable: bash
+  become: yes
+  register: load 
+
+- name: Show the results
+  debug:
+    msg: "{{ load.stdout_lines }}"
+
+- name: Insert firewall rule for consul register if it dosen't exist
+  shell: iptables -C INPUT -p tcp --dport 8500 -j ACCEPT; temp=$?; if [ $temp -eq 1 ]; then iptables -I INPUT -p tcp --dport 8500 -j ACCEPT;fi
+  become: yes
+
+- name: Launch consul
+  shell: "./run-tier2-consul.sh"
+  args:
+    executable: bash
+    chdir: "{{ consul_path }}"
+  register: launch
+  become: yes
+
+- name: Check if container is running
+  vars:
+    docker_inspect_cmd: !unsafe docker container inspect -f '{{.State.Running }}' qct-consul
+  shell: "{{ docker_inspect_cmd }}"
+  register: res
+  until: res.stdout == 'true'
+  retries: 3
+  delay: 2
+
+#- name: Deregister L2 telegraf to L2 consul
+#  shell: "./deregister-telegraf.sh"
+#  args:
+#    executable: bash
+#    chdir: "/opt/consul"
+#  register: dreg
+#  become: yes
+
+#- name: Show deregister results
+#  debug:
+#    msg: "{{ dreg }}"
+
+#- name: Register L2 telegraf to L2 consul
+#  shell: "./register-telegraf.sh"
+#  args:
+#    executable: bash
+#    chdir: "/opt/consul"
+#  register: reg
+#  become: yes
+
+#- name: Show register results
+#  debug:
+#    msg: "{{ reg }}"

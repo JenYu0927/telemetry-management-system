@@ -1,0 +1,138 @@
+---
+# Source: telegraf/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: telegraf-{{ .Chart.Name }}
+  labels:
+    app.kubernetes.io/name: telegraf
+data:
+  telegraf.conf: |+
+
+    [agent]
+      interval = "10s"
+      round_interval = true
+      metric_batch_size = 1000
+      metric_buffer_limit = 10000
+      collection_jitter = "0s"
+      flush_interval = "5s"
+      flush_jitter = "0s"
+      precision = ""
+      debug = true
+      quiet = false
+      hostname = {{ quote .Chart.Name }}
+      omit_hostname = false
+
+    # deploy
+    [[inputs.qct_server_redfish]]
+      redfish_ip = {{ quote .Values.qct.bmcip.deploy }}
+      username = {{ quote .Values.qct.username }}
+      password = {{ quote .Values.qct.password }}
+      [inputs.qct_server_redfish.tags]
+        server_id = "1"
+    
+    [[inputs.qct_ipmi_sensor]]
+      servers = ["{{ .Values.qct.username }}:{{ .Values.qct.password }}@lan({{ .Values.qct.bmcip.deploy }})"]
+      timeout = "30s"
+      [inputs.qct_ipmi_sensor.tags]
+        datacenter_id = {{ quote .Values.qct.datacenterID }}
+        room_id = {{ quote .Values.qct.roomID }}
+        rack_id = {{ quote .Values.qct.rackID }}
+        server_id = "1"
+    # deploy end
+    
+    # master
+    [[inputs.qct_server_redfish]]
+      redfish_ip = {{ quote .Values.qct.bmcip.master }}
+      username = {{ quote .Values.qct.username }}
+      password = {{ quote .Values.qct.password }}
+      [inputs.qct_server_redfish.tags]
+        server_id = "2"
+    
+    [[inputs.qct_ipmi_sensor]]
+      servers = ["{{ .Values.qct.username }}:{{ .Values.qct.password }}@lan({{ .Values.qct.bmcip.master }})"]
+      timeout = "30s"
+      [inputs.qct_ipmi_sensor.tags]
+        datacenter_id = {{ quote .Values.qct.datacenterID }}
+        room_id = {{ quote .Values.qct.roomID }}
+        rack_id = {{ quote .Values.qct.rackID }}
+        server_id = "2"
+    # master end
+    
+    # worker-0
+    [[inputs.qct_server_redfish]]
+      redfish_ip = {{ quote .Values.qct.bmcip.worker_0 }}
+      username = {{ quote .Values.qct.username }}
+      password = {{ quote .Values.qct.password }}
+      [inputs.qct_server_redfish.tags]
+        server_id = "3"
+    
+    [[inputs.qct_ipmi_sensor]]
+      servers = ["{{ .Values.qct.username }}:{{ .Values.qct.password }}@lan({{ .Values.qct.bmcip.worker_0 }})"]
+      timeout = "30s"
+      [inputs.qct_ipmi_sensor.tags]
+        datacenter_id = {{ quote .Values.qct.datacenterID }}
+        room_id = {{ quote .Values.qct.roomID }}
+        rack_id = {{ quote .Values.qct.rackID }}
+        server_id = "3"
+    # worker-0 end
+    
+    # worker-1
+    [[inputs.qct_server_redfish]]
+      redfish_ip = {{ quote .Values.qct.bmcip.worker_1 }}
+      username = {{ quote .Values.qct.username }}
+      password = {{ quote .Values.qct.password }}
+      [inputs.qct_server_redfish.tags]
+        server_id = "4"
+    
+    [[inputs.qct_ipmi_sensor]]
+      servers = ["{{ .Values.qct.username }}:{{ .Values.qct.password }}@lan({{ .Values.qct.bmcip.worker_1 }})"]
+      timeout = "30s"
+      [inputs.qct_ipmi_sensor.tags]
+        datacenter_id = {{ quote .Values.qct.datacenterID }}
+        room_id = {{ quote .Values.qct.roomID }}
+        rack_id = {{ quote .Values.qct.rackID }}
+        server_id = "4"
+    # worker-1 end
+    
+    # worker-2
+    [[inputs.qct_server_redfish]]
+      redfish_ip = {{ quote .Values.qct.bmcip.worker_2 }}
+      username = {{ quote .Values.qct.username }}
+      password = {{ quote .Values.qct.password }}
+      [inputs.qct_server_redfish.tags]
+        server_id = "5"
+    
+    [[inputs.qct_ipmi_sensor]]
+      servers = ["{{ .Values.qct.username }}:{{ .Values.qct.password }}@lan({{ .Values.qct.bmcip.worker_2 }})"]
+      timeout = "30s"
+      [inputs.qct_ipmi_sensor.tags]
+        datacenter_id = {{ quote .Values.qct.datacenterID }}
+        room_id = {{ quote .Values.qct.roomID }}
+        rack_id = {{ quote .Values.qct.rackID }}
+        server_id = "5"
+    # worker-2 end
+    
+    # worker-3
+    [[inputs.qct_server_redfish]]
+      redfish_ip = {{ quote .Values.qct.bmcip.worker_3 }}
+      username = {{ quote .Values.qct.username }}
+      password = {{ quote .Values.qct.password }}
+      [inputs.qct_server_redfish.tags]
+        server_id = "6"
+    
+    [[inputs.qct_ipmi_sensor]]
+      servers = ["{{ .Values.qct.username }}:{{ .Values.qct.password }}@lan({{ .Values.qct.bmcip.worker_3 }})"]
+      timeout = "30s"
+      [inputs.qct_ipmi_sensor.tags]
+        datacenter_id = {{ quote .Values.qct.datacenterID }}
+        room_id = {{ quote .Values.qct.roomID }}
+        rack_id = {{ quote .Values.qct.rackID }}
+        server_id = "6"
+    # worker-3 end
+
+    [[outputs.prometheus_client]]
+      # metric_version = 2
+      listen = ":9273"
+      path = "/metrics"
+      expiration_interval = "60s"

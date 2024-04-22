@@ -1,0 +1,90 @@
+- name: Create necessary directory if it does not exist
+  file:
+    path: "{{ telegraf_path }}"
+    state: directory
+    mode: "0755"
+    recurse: true
+  become: yes
+
+- name: Copy telegraf image
+  copy:
+    src: qct-telegraf.tar
+    dest: "{{ telegraf_path }}"
+  become: yes
+
+- name: Set internel communication IPs of controller
+  set_fact:
+    host_ip: "{{ controller_internel_ip }}"
+  when: host_name == "controller-0"
+
+- name: Copy telegraf config & register script on controller host
+  template:
+    src: "{{ item }}"
+    dest: "{{ telegraf_path }}"
+  with_items:
+    - telegraf-server.conf
+    - telegraf-server.json
+  become: yes
+
+- name: debug
+  debug:
+    msg:  "{{ host_ip }}    {{ exposed_host }}"
+
+- name: Copy telegraf script
+  template:
+    src: "{{ item }}"
+    dest: "{{ telegraf_path }}"
+    mode: a+x
+  with_items:
+    - run-telegraf.sh
+    - register-telegraf.sh
+    - deregister-telegraf.sh
+  become: yes
+
+- name: Load image
+  shell: docker load -i qct-telegraf.tar
+  args:
+    executable: bash
+    chdir: "{{ telegraf_path }}"
+  become: yes
+
+- name: Insert firewall rule for telegraf listening if it dosen't exist
+  shell: iptables -C INPUT -p tcp --dport 9273 -j ACCEPT; temp=$?; if [ $temp -eq 1 ]; then iptables -I INPUT -p tcp --dport 9273 -j ACCEPT;fi
+  become: yes
+
+- name: Launch telegraf
+  shell: "./run-telegraf.sh"
+  args:
+    executable: bash
+    chdir: "{{ telegraf_path }}"
+  register: res
+  become: yes
+
+- name: Show the results
+  debug:
+    msg: "{{ res }}"
+
+- name: Deregister telegraf to tier-2 consul
+  shell: "./deregister-telegraf.sh"
+  args:
+    executable: bash
+    chdir: "/opt/telegraf"
+  register: dreg
+  become: yes
+
+- name: Show deregister results
+  debug:
+    msg: "{{ dreg }}"
+
+- name: Register telegraf to tier-2 consul
+  shell: "./register-telegraf.sh"
+  args:
+    executable: bash
+    chdir: "/opt/telegraf"
+  register: rreg
+  become: yes
+
+- name: Show deregister results
+  debug:
+    msg: "{{ rreg }}"
+

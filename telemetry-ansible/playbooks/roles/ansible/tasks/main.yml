@@ -1,0 +1,69 @@
+- name: Create necessary directory if it does not exist
+  file:
+    path: "{{ ansible_path }}"
+    state: directory
+    mode: "0755"
+    recurse: true
+  become: yes
+
+- name: show var
+  debug:
+    msg:  "playbooks_path:  {{ playbooks_path }}"
+
+- name: Copy Playbooks files
+  copy:
+    src: "{{ playbooks_path }}"
+    dest: "{{ ansible_path }}"
+  become: yes
+
+- name: Copy config files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_path }}"
+  with_items: ansible.cfg
+  become: yes
+
+- name: Copy image files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_path }}"
+  with_items: centos7-ansible.tar
+  become: yes
+    
+- name: Copy ansible script if login user is root
+  vars:
+    key_path: ""
+  template:
+    src: "run-ansible.sh"
+    dest: "{{ ansible_path }}"
+    mode: a+x
+  become: yes
+  when: ansible_user == "root"
+
+- name: Copy ansible script if login user isn't  root
+  vars:
+    key_path: "/home"
+  template:
+    src: "run-ansible.sh"
+    dest: "{{ ansible_path }}"
+    mode: a+x
+  become: yes
+  when: ansible_user != "root"
+
+- name: Load image
+  shell: "docker load -i {{ ansible_path }}/centos7-ansible.tar"
+  args:
+    executable: bash
+  become: yes
+
+- name: Launch ansible
+  shell: "./run-ansible.sh"
+  args:
+    executable: bash
+    chdir: "{{ ansible_path }}"
+  register: res
+  become: yes
+
+- name: Show the results
+  debug:
+    msg: "{{ res }}"

@@ -1,0 +1,16 @@
+{
+  "id": "node-remote",
+  "name": "telegraf",
+  "address": "telegraf-remote.default.svc.cluster.local",
+  "port": 9273,
+  "tags": [
+    "server"
+  ],
+  "checks": [
+    {
+      "http": "http://telegraf-remote.default.svc.cluster.local:9273/metrics",
+      "interval": "25s"
+    }
+  ]
+}
+

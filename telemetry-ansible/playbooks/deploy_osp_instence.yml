@@ -1,0 +1,12 @@
+- name: deploy instance
+  hosts: osp_instance
+  gather_facts: yes
+  vars:
+    exposed_host: "{{ deployer_internel_ip }}"
+#  tasks:
+#    - debug:
+#        msg: "{{ host_ip }}"
+  roles:
+    - telegraf-server
+#    - fluentd
+#

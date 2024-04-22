@@ -1,0 +1,2 @@
+prom_path: "/opt/prometheus"
+consul_endpoint: "10.205.60.86:30500"

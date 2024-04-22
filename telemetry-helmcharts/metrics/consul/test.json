@@ -1,0 +1,27 @@
+{
+  "id": "lb9-u41-rack5-dc2",
+    "name": "switch",
+    "tags": [
+      "LB9",
+      "u-41", 
+      "rack-5"
+    ],
+    "meta": {
+      "device_type": "switch",
+      "model": "LB9", 
+      "datacenter": "dc1",
+      "rack": "rack-5",
+      "position": "u-41",
+      "address": "10.254.0.26", 
+      "port": "22",
+      "protocol": "ssh"
+    },
+    "address": "10.254.0.26",
+    "port": 22, 
+    "check": {
+      "name": "SSH TCP on port 22",
+      "tcp": "10.254.0.26:22",
+      "interval": "10s",
+      "timeout": "1s"
+    }
+}

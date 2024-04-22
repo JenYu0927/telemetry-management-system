@@ -1,0 +1,45 @@
+osp_exposed_host:
+#  vars:
+#    deployer_internel_ip: 192.168.60.50 # current json file doesn't require this info
+  hosts:
+#    10.205.60.90:
+#      ansible_user: root
+#      ansible_password: redhat
+#      host_name: exposure
+#      server_id: 7
+#      deployer_internel_ip: 192.168.60.49
+   10.205.60.89:
+      ansible_user: stack
+      ansible_password: password
+      host_name: deployer
+      server_id: 7
+      deployer_internel_ip: 192.168.60.50 # current json file doesn't require this info
+
+osp_instance:
+  vars:
+    deployer_internel_ip: 192.168.60.50
+  hosts:
+    192.168.60.68:
+      ansible_user: heat-admin
+      ansible_ssh_private_key_file: /root/.ssh/id_rsa
+      host_name: controller-0
+      server_id: 8
+      controller_internel_ip: 192.168.60.68
+
+    192.168.60.71:
+      ansible_user: heat-admin
+      ansible_ssh_private_key_file: /root/.ssh/id_rsa
+      host_name: compute-0
+      server_id: 9
+
+    192.168.60.65:
+      ansible_user: heat-admin
+      ansible_ssh_private_key_file: /root/.ssh/id_rsa
+      host_name: compute-1
+      server_id: 10
+
+    192.168.60.54:
+      ansible_user: heat-admin
+      ansible_ssh_private_key_file: /root/.ssh/id_rsa
+      host_name: compute-2
+      server_id: 11

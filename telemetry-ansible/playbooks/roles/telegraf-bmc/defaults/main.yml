@@ -1,0 +1,2 @@
+telegraf_path: "/opt/telegraf"
+host_ip: "{{ ansible_default_ipv4.address }}"
